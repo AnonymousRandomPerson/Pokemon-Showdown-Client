@@ -32,7 +32,7 @@
 				} else {
 					buf += '<p class="error"><strong>Pok&eacute;mon Showdown is offline due to technical difficulties!</strong></p>';
 				}
-				buf += '<p><div style="text-align:center"><img width="96" height="96" src="//play.pokemonshowdown.com/sprites/bw/teddiursa.png" alt="" /></div> Bear with us as we freak out.</p>';
+				buf += '<p><div style="text-align:center"><img width="96" height="96" src="http://play.pokemonshowdown.com/sprites/bw/teddiursa.png" alt="" /></div> Bear with us as we freak out.</p>';
 				buf += '<p>(We\'ll be back up in a few hours.)</p>';
 				buf += '</div>';
 			} else {
@@ -827,6 +827,9 @@
 		search: function (i, button) {
 			if (!window.BattleFormats) return;
 			this.requestNotifications();
+			if (!button) {
+				button = '[name="search"]';
+			}
 			var $searchForm = $(button).closest('form');
 			if ($searchForm.find('.cancel').length) {
 				return;

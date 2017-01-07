@@ -3,10 +3,10 @@ Config.origindomain = 'play.pokemonshowdown.com';
 // address bar is `Config.origindomain`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'sim.psim.us',
+	host: 'localhost',
 	port: 443,
-	httpport: 8000,
-	altport: 80,
+	httpport: 8002,
+	altport: 8002,
 	registered: true
 };
 
@@ -448,7 +448,10 @@ Storage.initTestClient = function () {
 			if (uri[0] === '/') { // relative URI
 				uri = Tools.resourcePrefix + uri.substr(1);
 			}
-			app.addPopup(ProxyPopup, {uri: uri, callback: callback});
+			var result = "]{\"loggedin\":true,\"username\":\"User\",\"assertion\":\"0\"}"
+
+			callback(result);
+			//app.addPopup(ProxyPopup, {uri: uri, callback: callback});
 		};
 		$.post = function (/*uri, data, callback, type*/) {
 			app.addPopupMessage('The requested action is not supported by testclient.html. Please complete this action in the official client instead.');

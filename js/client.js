@@ -1,5 +1,4 @@
 (function ($) {
-
 	Config.sockjsprefix = '/showdown';
 	Config.root = '/';
 
@@ -682,7 +681,7 @@
 			};
 			this.socket.onmessage = function (msg) {
 				if (window.console && console.log) {
-					console.log('<< ' + msg.data);
+					//console.log('<< ' + msg.data);
 				}
 				if (msg.data.charAt(0) !== '{') {
 					self.receive(msg.data);
@@ -746,7 +745,7 @@
 				return;
 			}
 			if (window.console && console.log) {
-				console.log('>> ' + data);
+				//console.log('>> ' + data);
 			}
 			this.socket.send(data);
 		},

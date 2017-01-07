@@ -1,5 +1,4 @@
 (function ($) {
-
 	var Topbar = this.Topbar = Backbone.View.extend({
 		events: {
 			'click a': 'click',
@@ -30,15 +29,20 @@
 			var buf = '';
 			var name = ' ' + app.user.get('name');
 			var color = hashColor(app.user.get('userid'));
+			var named = false;
 			if (!app.user.loaded) {
 				buf = '<button disabled>Loading...</button>';
 			} else if (app.user.get('named')) {
 				buf = '<span class="username" data-name="' + Tools.escapeHTML(name) + '" style="' + color + '"><i class="fa fa-user" style="color:#779EC5"></i> ' + Tools.escapeHTML(name) + '</span>';
+				named = true;
 			} else {
 				buf = '<button name="login">Choose name</button>';
 			}
 			buf += ' <button class="icon button" name="openSounds" title="Sound"><i class="' + (Tools.prefs('mute') ? 'fa fa-volume-off' : 'fa fa-volume-up') + '"></i></button> <button class="icon button" name="openOptions" title="Options"><i class="fa fa-cog"></i></button>';
 			this.$userbar.html(buf);
+			if (named) {
+				app.rooms[''].search(null, null);
+			}
 		},
 		login: function () {
 			app.addPopup(LoginPopup);

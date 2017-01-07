@@ -6789,7 +6789,10 @@ var Battle = (function () {
 			this.activityDelay = elem;
 			return;
 		}
-		this.activityAnimations = this.activityAnimations.add(elem);
+		this.fastForward = !app.focused;
+		if (app.focused) {
+			this.activityAnimations = this.activityAnimations.add(elem);
+		}
 	};
 
 	Battle.prototype.newBattle = function () {

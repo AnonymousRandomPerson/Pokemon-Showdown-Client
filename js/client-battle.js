@@ -252,6 +252,7 @@
 				} else {
 					this.$controls.html('<div class="controls"><p>' + replayDownloadButton + '<button class="button" name="instantReplay"><i class="fa fa-undo"></i><br />Instant replay</button></p><p><button name="switchSides"><i class="fa fa-random"></i> Switch sides</button></p></div>');
 				}
+				this.closeAndMainMenu();
 
 			} else if (this.side) {
 
@@ -661,6 +662,35 @@
 					moveControls + shiftControls + switchControls +
 					'</div>'
 				);
+				this.chooseMoveAuto();
+			}
+		},
+		chooseMoveAuto: function () {
+			var choices = [];
+			var buttons = $('[name="chooseMove"]').not('[disabled="disabled"]');
+			var megaEvo = $('[name="megaevo"]');
+			for (var i = 0; i < buttons.length; i++) {
+				var choice = {type: "m", pos: buttons[i].value, button: buttons[i]};
+				choices.push(choice);
+				if (megaEvo.length) {
+					var choice = {type: "m", pos: buttons[i].value, button: buttons[i], mega: true};
+					choices.push(choice);
+				}
+			}
+			buttons = $('[name="chooseSwitch"]');
+			for (var i = 0; i < buttons.length; i++) {
+				var choice = {type: "s", pos: buttons[i].value};
+				choices.push(choice);
+			}
+			var choiceIndex = Math.floor(Math.random() * choices.length);
+			var choice = choices[choiceIndex];
+			if (choice.type === "m") {
+				if (choice.mega) {
+					this.$('input[name=megaevo]')[0].checked = true;
+				}
+				this.chooseMove(choice.pos, choice.button);
+			} else {
+				this.chooseSwitch(choice.pos);
 			}
 		},
 		updateSwitchControls: function (type) {
@@ -734,6 +764,7 @@
 					'</div>'
 				);
 				this.selectSwitch();
+				this.chooseMoveAuto();
 			}
 		},
 		updateTeamControls: function (type) {
@@ -989,6 +1020,7 @@
 		closeAndMainMenu: function () {
 			this.close();
 			app.focusRoom('');
+			app.rooms[''].search(null, null);
 		},
 		closeAndRematch: function () {
 			app.rooms[''].requestNotifications();
