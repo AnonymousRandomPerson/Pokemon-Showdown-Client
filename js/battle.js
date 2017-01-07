@@ -2566,6 +2566,9 @@ var Battle = (function () {
 	Battle.prototype.log = function (html, preempt) {
 		var willScroll = false;
 		if (!this.fastForward) willScroll = (this.logFrameElem.scrollTop() + 60 >= this.logElem.height() + this.logPreemptElem.height() - this.optionsElem.height() - this.logFrameElem.height());
+		if (Config.autoBattle) {
+			willScroll = true;
+		}
 		if (preempt) {
 			this.logPreemptElem.append(html);
 		} else {
