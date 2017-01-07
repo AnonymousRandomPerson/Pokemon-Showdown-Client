@@ -1091,6 +1091,10 @@
 				return '<em>Select a team</em>';
 			}
 			var team = Storage.teams[i];
+			var defaultTeam = app.rooms[''].getTeam();
+			if (defaultTeam) {
+				team.team = defaultTeam;
+			}
 			if (!team) return 'Error: Corrupted team';
 			var buf = '<strong>' + Tools.escapeHTML(team.name) + '</strong><small>';
 			buf += Storage.getTeamIcons(team) + '</small>';
