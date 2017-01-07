@@ -18,7 +18,11 @@
 			this.$join = null;
 			this.$foeHint = this.$el.find('.foehint');
 
-			BattleSound.setMute(Tools.prefs('mute'));
+			var muted = Tools.prefs('mute');
+			if (!Config.playMusic) {
+				muted = true;
+			}
+			BattleSound.setMute(muted);
 			this.battle = new Battle(this.$battle, this.$chatFrame);
 			this.tooltips = new BattleTooltips(this.battle, this);
 
@@ -666,6 +670,9 @@
 			}
 		},
 		chooseMoveAuto: function () {
+			if (!Config.autoBattle) {
+				return;
+			}
 			var choices = [];
 			var buttons = $('[name="chooseMove"]').not('[disabled="disabled"]');
 			var megaEvo = $('[name="megaevo"]');

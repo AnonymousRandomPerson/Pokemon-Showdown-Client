@@ -1,6 +1,9 @@
 (function ($) {
 	Config.sockjsprefix = '/showdown';
 	Config.root = '/';
+	Config.enableNotifications = false;
+	Config.autoBattle = true;
+	Config.playMusic = false;
 
 	if (window.nodewebkit) {
 		window.gui = require('nw.gui');
@@ -399,6 +402,9 @@
 				Storage.prefs('bg', null);
 
 				var muted = Tools.prefs('mute');
+				if (!Config.playMusic) {
+					muted = true;
+				}
 				BattleSound.setMute(muted);
 
 				$('html').toggleClass('dark', !!Tools.prefs('dark'));
@@ -1818,15 +1824,17 @@
 
 		requestNotifications: function () {
 			try {
-				if (window.webkitNotifications && webkitNotifications.requestPermission) {
-					// Notification.requestPermission crashes Chrome 23:
-					//   https://code.google.com/p/chromium/issues/detail?id=139594
-					// In lieu of a way to detect Chrome 23, we'll just use the old
-					// requestPermission API, which works to request permissions for
-					// the new Notification spec anyway.
-					webkitNotifications.requestPermission();
-				} else if (window.Notification && Notification.requestPermission) {
-					Notification.requestPermission(function (permission) {});
+				if (Config.enableNotifications) {
+					if (window.webkitNotifications && webkitNotifications.requestPermission) {
+						// Notification.requestPermission crashes Chrome 23:
+						//   https://code.google.com/p/chromium/issues/detail?id=139594
+						// In lieu of a way to detect Chrome 23, we'll just use the old
+						// requestPermission API, which works to request permissions for
+						// the new Notification spec anyway.
+						webkitNotifications.requestPermission();
+					} else if (window.Notification && Notification.requestPermission) {
+						Notification.requestPermission(function (permission) {});
+					}
 				}
 			} catch (e) {}
 		},
