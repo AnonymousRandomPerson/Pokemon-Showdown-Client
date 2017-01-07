@@ -93,8 +93,16 @@
 		<script src="js/lib/sockjs-0.3.4.min.js"></script>
 		<script src="js/lib/color-thief.min.js"></script>
 
+		<script src="js/teams.js"></script>
+
 		<script>
 			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading client...';
+			Config.enableNotifications = false;
+			Config.autoBattle = false;
+			Config.autoSearch = true;
+			Config.playMusic = false;
+			Config.battleType = "gen7pokebankanythinggoes";
+			Config.team = Config.teamManual;
 		</script>
 
 		<script src="js/client.js"></script>

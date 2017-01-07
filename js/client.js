@@ -1,9 +1,6 @@
 (function ($) {
 	Config.sockjsprefix = '/showdown';
 	Config.root = '/';
-	Config.enableNotifications = false;
-	Config.autoBattle = true;
-	Config.playMusic = false;
 
 	if (window.nodewebkit) {
 		window.gui = require('nw.gui');

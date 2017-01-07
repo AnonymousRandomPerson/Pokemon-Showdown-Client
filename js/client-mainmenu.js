@@ -771,8 +771,12 @@
 			if (!noChoice) {
 				this.curFormat = formatid;
 				if (!this.curFormat) {
-					if (BattleFormats['gen7randombattle']) {
-						this.curFormat = 'gen7randombattle';
+					var defaultFormat = Config.battleType;
+					if (!defaultFormat) {
+						defaultFormat = 'gen7randombattle';
+					}
+					if (BattleFormats[defaultFormat]) {
+						this.curFormat = defaultFormat;
 					} else for (var i in BattleFormats) {
 						if (!BattleFormats[i].searchShow || !BattleFormats[i].challengeShow) continue;
 						this.curFormat = i;
@@ -847,6 +851,10 @@
 			var teamIndex = $teamButton.val();
 			var team = null;
 			if (Storage.teams[teamIndex]) team = Storage.teams[teamIndex];
+			var defaultTeam = this.getTeam();
+			if (defaultTeam) {
+				team.team = defaultTeam;
+			}
 			if (!window.BattleFormats[format].team && (teamIndex === '' || !team)) {
 				if (Storage.teams) {
 					app.addPopupMessage("Please select a team.");
@@ -856,15 +864,22 @@
 				return;
 			}
 
-			$formatButton.addClass('preselected')[0].disabled = true;
-			$teamButton.addClass('preselected')[0].disabled = true;
-			$searchForm.find('button.big').html('<strong><i class="fa fa-refresh fa-spin"></i> Connecting...</strong>').addClass('disabled');
-			$searchForm.append('<p class="cancel buttonbar"><button name="cancelSearch">Cancel</button></p>');
+			if (Config.printTeam) {
+				console.log(team.team);
+			} else {
+				$formatButton.addClass('preselected')[0].disabled = true;
+				$teamButton.addClass('preselected')[0].disabled = true;
+				$searchForm.find('button.big').html('<strong><i class="fa fa-refresh fa-spin"></i> Connecting...</strong>').addClass('disabled');
+				$searchForm.append('<p class="cancel buttonbar"><button name="cancelSearch">Cancel</button></p>');
 
-			app.sendTeam(team);
-			this.searchDelay = setTimeout(function () {
-				app.send('/search ' + format);
-			}, 3000);
+				app.sendTeam(team);
+				this.searchDelay = setTimeout(function () {
+					app.send('/search ' + format);
+				}, 3000);
+			}
+		},
+		getTeam: function () {
+			return Config.team;
 		},
 		cancelSearch: function () {
 			clearTimeout(this.searchDelay);

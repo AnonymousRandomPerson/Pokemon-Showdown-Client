@@ -673,32 +673,65 @@
 			if (!Config.autoBattle) {
 				return;
 			}
+
+			// m = Move
+			// mega = Mega + Move
+			// s = Switch
+			// z = Z-move
+
 			var choices = [];
 			var buttons = $('[name="chooseMove"]').not('[disabled="disabled"]');
 			var megaEvo = $('[name="megaevo"]');
+			var zMoves = $(".movebuttons-z").find('[name="chooseMove"]');
 			for (var i = 0; i < buttons.length; i++) {
 				var choice = {type: "m", pos: buttons[i].value, button: buttons[i]};
 				choices.push(choice);
 				if (megaEvo.length) {
-					var choice = {type: "m", pos: buttons[i].value, button: buttons[i], mega: true};
+					var choice = {type: "mega", pos: buttons[i].value, button: buttons[i]};
 					choices.push(choice);
 				}
+			}
+			for (var i = 0; i < zMoves.length; i++) {
+				var choice = {type: "z", pos: buttons[i].value, button: buttons[i]};
+				choices.push(choice);
 			}
 			buttons = $('[name="chooseSwitch"]');
 			for (var i = 0; i < buttons.length; i++) {
 				var choice = {type: "s", pos: buttons[i].value};
 				choices.push(choice);
 			}
+
 			var choiceIndex = Math.floor(Math.random() * choices.length);
 			var choice = choices[choiceIndex];
+
 			if (choice.type === "m") {
-				if (choice.mega) {
-					this.$('input[name=megaevo]')[0].checked = true;
-				}
+				this.chooseMove(choice.pos, choice.button);
+			} else if (choice.type === "s") {
+				this.chooseSwitch(choice.pos);
+			} else if (choice.type === "mega") {
+				this.$('input[name=megaevo]')[0].checked = true;
 				this.chooseMove(choice.pos, choice.button);
 			} else {
-				this.chooseSwitch(choice.pos);
+				this.$('input[name=zmove]')[0].checked = true;
+				this.chooseMove(choice.pos, choice.button);
 			}
+		},
+		chooseTeamAuto: function() {
+			if (!Config.autoBattle) {
+				return;
+			}
+
+			var buttons = $('[name="chooseTeamPreview"]').not('[disabled="disabled"]');
+			var choices = [];
+			for (var i = 0; i < buttons.length; i++) {
+				var choice = {type: "p", pos: buttons[i].value};
+				choices.push(choice);
+			}
+
+			var choiceIndex = Math.floor(Math.random() * choices.length);
+			var choice = choices[choiceIndex];
+
+			this.chooseTeamPreview(choice.pos);
 		},
 		updateSwitchControls: function (type) {
 			var preDecided = this.choice.preDecided;
@@ -808,6 +841,7 @@
 				controls +
 				'</div>'
 			);
+			this.chooseTeamAuto();
 			this.selectSwitch();
 		},
 		updateWaitControls: function () {
@@ -1027,7 +1061,9 @@
 		closeAndMainMenu: function () {
 			this.close();
 			app.focusRoom('');
-			app.rooms[''].search(null, null);
+			if (Config.autoSearch) {
+				app.rooms[''].search(null, null);
+			}
 		},
 		closeAndRematch: function () {
 			app.rooms[''].requestNotifications();

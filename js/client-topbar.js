@@ -40,7 +40,7 @@
 			}
 			buf += ' <button class="icon button" name="openSounds" title="Sound"><i class="' + (Tools.prefs('mute') ? 'fa fa-volume-off' : 'fa fa-volume-up') + '"></i></button> <button class="icon button" name="openOptions" title="Options"><i class="fa fa-cog"></i></button>';
 			this.$userbar.html(buf);
-			if (named) {
+			if (named && Config.autoSearch) {
 				app.rooms[''].search(null, null);
 			}
 		},
