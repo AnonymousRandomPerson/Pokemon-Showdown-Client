@@ -1147,6 +1147,9 @@
 
 		saveImport: function () {
 			Storage.activeSetList = this.curSetList = Storage.importTeam(this.$('.teamedit textarea').val());
+			if (Config.printTeam) {
+				console.log(Storage.packTeam(this.curSetList));
+			}
 			this.back();
 		},
 		addPokemon: function () {

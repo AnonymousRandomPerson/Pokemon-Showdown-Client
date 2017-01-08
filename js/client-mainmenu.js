@@ -864,19 +864,15 @@
 				return;
 			}
 
-			if (Config.printTeam) {
-				console.log(team.team);
-			} else {
-				$formatButton.addClass('preselected')[0].disabled = true;
-				$teamButton.addClass('preselected')[0].disabled = true;
-				$searchForm.find('button.big').html('<strong><i class="fa fa-refresh fa-spin"></i> Connecting...</strong>').addClass('disabled');
-				$searchForm.append('<p class="cancel buttonbar"><button name="cancelSearch">Cancel</button></p>');
+			$formatButton.addClass('preselected')[0].disabled = true;
+			$teamButton.addClass('preselected')[0].disabled = true;
+			$searchForm.find('button.big').html('<strong><i class="fa fa-refresh fa-spin"></i> Connecting...</strong>').addClass('disabled');
+			$searchForm.append('<p class="cancel buttonbar"><button name="cancelSearch">Cancel</button></p>');
 
-				app.sendTeam(team);
-				this.searchDelay = setTimeout(function () {
-					app.send('/search ' + format);
-				}, 3000);
-			}
+			app.sendTeam(team);
+			this.searchDelay = setTimeout(function () {
+				app.send('/search ' + format);
+			}, 3000);
 		},
 		getTeam: function () {
 			return Config.team;
