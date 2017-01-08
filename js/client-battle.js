@@ -1350,7 +1350,8 @@
 		submit: function (data) {
 			this.room.send('/forfeit');
 			this.room.battle.forfeitPending = true;
-			if (this.$('input[name=closeroom]')[0].checked) {
+			var checkbox = this.$('input[name=closeroom]')[0];
+			if (!checkbox || checkbox.checked) {
 				app.removeRoom(this.room.id);
 			}
 			this.close();
