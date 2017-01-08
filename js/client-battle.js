@@ -701,17 +701,36 @@
 				choices.push(choice);
 			}
 
-			this.sendMoveChoice(choice);
+			this.chooseFromChoices(choices);
 		},
 		chooseFromChoices: function(choices) {
 			if (Config.aiType === "learn") {
-
+				var first = true;
+				var choiceString = "";
+				for (var i = 0; i < choices.length; i++) {
+					if (!first) {
+						choiceString += ",";
+					}
+					choiceString += choices[i].type + choices[i].pos;
+					first = false;
+				}
+				var choicesObject = {
+					choiceString: choiceString
+				};
+				$.ajax("http://localhost:5000/",
+				{
+					data: choicesObject,
+					success: function(data) {
+						this.battle.sendMoveChoice(choices[data]); 
+					},
+					battle: this
+				}); 
 			} else {
 				var choiceIndex = Math.floor(Math.random() * choices.length);
 				var choice = choices[choiceIndex];
 				this.sendMoveChoice(choice);
 			}
-		}
+		},
 		sendMoveChoice: function(choice) {
 			if (choice.type === "m") {
 				this.chooseMove(choice.pos, choice.button);
@@ -862,6 +881,8 @@
 				} else {
 					buf += '<p><button class="button" name="setTimer" value="on">Claim victory</button> <small>&larr; Your opponent has disconnected. Click this if they don\'t reconnect.</small></p>';
 				}
+				
+				this.closeAndMainMenu();
 			}
 			this.$controls.html(buf + '</div>');
 		},
@@ -886,8 +907,14 @@
 					var parts = this.choice.choices[i].split(' ');
 					switch (parts[0]) {
 					case 'move':
+						if (!this.request.active[i]) {
+							continue;
+						}
 						var move = this.request.active[i].moves[parts[1] - 1].move;
 						var target = '';
+						if (!myActive[i]) {
+							continue;
+						}
 						buf += myActive[i].species + ' will ';
 						if (parts.length > 2) {
 							var targetPos = parts[2];
@@ -1304,7 +1331,11 @@
 			} else {
 				buf += '<p><button type="submit"><strong>Forfeit</strong></button> <button name="replacePlayer">Replace player</button> <button name="close" class="autofocus">Cancel</button></p></form>';
 			}
-			this.$el.html(buf);
+			if (Config.autoBattle) {
+				this.submit();
+			} else {
+				this.$el.html(buf);
+			}
 		},
 		replacePlayer: function (data) {
 			var room = this.room;

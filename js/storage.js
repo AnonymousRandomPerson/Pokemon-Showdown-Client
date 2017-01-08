@@ -435,7 +435,7 @@ Storage.initTestClient = function () {
 	Config.server = Config.server || Config.defaultserver;
 	Storage.whenTeamsLoaded.load();
 	Storage.whenAppLoaded(function (app) {
-		$.get = function (uri, data, callback, type) {
+		$.getUser = function (uri, data, callback, type) {
 			if (type === 'html') {
 				uri += '&testclient';
 			}

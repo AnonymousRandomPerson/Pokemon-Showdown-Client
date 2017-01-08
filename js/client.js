@@ -308,7 +308,7 @@
 				 */
 				this.challstr = challstr;
 				var self = this;
-				$.get(this.getActionPHP(), {
+				$.getUser(this.getActionPHP(), {
 					act: 'upkeep',
 					challstr: this.challstr
 				}, Tools.safeJSON(function (data) {
