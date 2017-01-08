@@ -93,7 +93,6 @@
 		<script src="js/lib/sockjs-0.3.4.min.js"></script>
 		<script src="js/lib/color-thief.min.js"></script>
 
-		<script src="js/teams.js"></script>
 
 		<script>
 			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading client...';
@@ -102,7 +101,6 @@
 			Config.autoSearch = true;
 			Config.playMusic = false;
 			Config.battleType = "gen7pokebankanythinggoes";
-			Config.team = Config.team2;
 		</script>
 
 		<script src="js/client.js"></script>
@@ -117,6 +115,12 @@
 		<script src="js/client-rooms.js"></script>
 		<script src="js/storage.js"></script>
 		<script src="data/graphics.js"></script>
+		
+		<script src="js/teams.js"></script>
+
+		<script>
+			Config.team = Config.team2;
+		</script>
 
 		<script>
 			var app = new App();

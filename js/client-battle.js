@@ -701,9 +701,18 @@
 				choices.push(choice);
 			}
 
-			var choiceIndex = Math.floor(Math.random() * choices.length);
-			var choice = choices[choiceIndex];
+			this.sendMoveChoice(choice);
+		},
+		chooseFromChoices: function(choices) {
+			if (Config.aiType === "learn") {
 
+			} else {
+				var choiceIndex = Math.floor(Math.random() * choices.length);
+				var choice = choices[choiceIndex];
+				this.sendMoveChoice(choice);
+			}
+		}
+		sendMoveChoice: function(choice) {
 			if (choice.type === "m") {
 				this.chooseMove(choice.pos, choice.button);
 			} else if (choice.type === "s") {
